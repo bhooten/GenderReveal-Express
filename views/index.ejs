@@ -1,0 +1,21 @@
+<%
+ const bodyContent = `
+    <div class="countdown-container">
+        <p id="countdown-timer">${revealTime}</p>
+    </div>
+
+    <div class="request-id">
+        Request ID: ${requestId}
+    </div>
+
+    <script type="application/javascript">
+        const revealDate = new Date('${revealTime}');
+    </script>
+ `;
+ %>
+
+<%- include('./layout.ejs', {
+  title: title,
+  backgroundColor: backgroundColor,
+  body: bodyContent
+}) -%>

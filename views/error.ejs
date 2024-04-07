@@ -1,0 +1,11 @@
+<%
+const bodyContent = `
+    <p>Error Occurred: <strong>${statusCode}</strong>: ${errorMessage}</p>
+ `;
+%>
+
+<%- include('./layout.ejs', {
+title: 'Gender Reveal - Oops!',
+backgroundColor: '#FFFFFF',
+body: bodyContent
+}) -%>

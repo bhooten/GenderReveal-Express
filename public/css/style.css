@@ -1,0 +1,22 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.countdown-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.request-id {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(50, 50, 50, 0.4); /* Dark grey background with 80% opacity */
+  color: rgba(211, 211, 211, 0.8); /* Light grey text */
+  font-size: 8px;
+  padding: 6px;
+}
