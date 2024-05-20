@@ -51,8 +51,11 @@ function initConfig(fileName) {
   // Define default configuration values as a fallback
   const defaultConfig = {
     revealTime: '2025-01-01T00:00:00',
-    gender: 'F',
-    genderName: 'girl',
+    children: [{
+      gender: 'F',
+      genderName: 'girl',
+      childName: 'Jane'
+    }],
     pageTitle: 'Smith\'s Gender Reveal'
   }
 
@@ -90,7 +93,6 @@ function initConfig(fileName) {
   // Proceed into try / catch logic for JSON parsing
   try {
     config = JSON.parse(file);
-    let writebackToFile = false;
 
     // Compare defaultConfig object against config object to confirm all values are present and handle if not
     for(let key of Object.keys(defaultConfig)) {
@@ -98,27 +100,23 @@ function initConfig(fileName) {
         // Value present in default is not found in read config file; log warning and provide default
         console.warn(`Required configuration value '${key}' is not present. Adding to config file and proceeding with default value: ${defaultConfig[key]}`);
         config[key] = defaultConfig[key];
-        writebackToFile = true;
-      }
-    }
-
-    // Check to see if a default value was identified that is not present in the file, then attempt to write it back
-    if(writebackToFile) {
-      // Open new try / catch block to handle writing back default config values to file
-      try {
-        fs.writeFileSync(fileName, JSON.stringify(config, null, 2));
-      } catch(err) {
-        console.warn(`Failed to write default values back to the configuration file:\n${err}`);
       }
     }
 
     // Begin additional config file processing
-    if(!config.genderColor) {
-      config.genderColor = DEFAULT_GENDER_COLOR_MAP[config.gender.toUpperCase()] || '#D3D3D3';
+    if(!config.revealBackgroundColor) {
+      config.revealBackgroundColor = DEFAULT_GENDER_COLOR_MAP[config.children[0].gender.toUpperCase()] || '#D3D3D3';
     }
 
     // Complete internal conversion from localized date / time to UTC for transfer to client
     config.revealTime = new Date(config.revealTime).toISOString();
+
+    // Open new try / catch block to handle writing back default config values to file
+    try {
+      fs.writeFileSync(fileName, JSON.stringify(config, null, 2));
+    } catch(err) {
+      console.warn(`Failed to write default values back to the configuration file:\n${err}`);
+    }
   } catch(err) {
     console.warn(`An error occurred while attempting to parse the configuration file:\n${err}`)
   }
@@ -131,9 +129,8 @@ app.get('/api/genderReveal', function(req, res) {
   let responseData = { requestId: reqUUID, revealTime: config.revealTime, backgroundColor: '#FFFFFF' };
 
   if(Date.now() > Date.parse(config.revealTime) - 400) {
-    responseData.gender = config.gender;
-    responseData.genderName = config.genderName;
-    responseData.backgroundColor = config.genderColor;
+    responseData.children = config.children;
+    responseData.backgroundColor = config.revealBackgroundColor;
   }
 
   res.status(200).end(JSON.stringify(responseData));
