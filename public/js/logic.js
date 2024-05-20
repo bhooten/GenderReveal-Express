@@ -74,8 +74,6 @@ function formatGenderRevealString(childrenNode)
         default:
             for(i = 0; i < childrenNode.length; i++)
             {
-                let childEntry = childrenNode[i]
-
                 // Check to see if this is the last element
                 if(i === childrenNode.length - 1)
                 {

@@ -93,7 +93,6 @@ function initConfig(fileName) {
   // Proceed into try / catch logic for JSON parsing
   try {
     config = JSON.parse(file);
-    let writebackToFile = false;
 
     // Compare defaultConfig object against config object to confirm all values are present and handle if not
     for(let key of Object.keys(defaultConfig)) {
